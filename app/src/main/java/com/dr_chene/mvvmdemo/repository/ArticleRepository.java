@@ -36,6 +36,9 @@ public class ArticleRepository {
         return getArticleByPage(++curPage);
     }
 
+    //加载数据，思路是通过网络加载数据，如果失败则从本地加载数据
+    //事实上我觉得这样的模式会消耗大量的流量，并且在网络优良的情况下本地room数据基本没用
+    //我是考虑到用户既然要使用该app，就是想获得最新的数据，所以才使用了这样一个模式
     private List<Article> getArticleByPage(int page) {
         if (over) {
             Toast.makeText(App.getContext(), "no more data", Toast.LENGTH_SHORT).show();
