@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/include_load_bg"
+        android:elevation="@dimen/include_load_center_card_elevation">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="@dimen/include_load_center_card_width"
+            android:layout_height="@dimen/include_load_center_card_height"
+            app:cardCornerRadius="@dimen/include_load_center_card_corner_radius"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/include_load_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/include_load_center_card_elevation"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:elevation="@dimen/include_load_center_card_elevation"
+            android:text="@string/include_load_text"
+            android:textColor="@color/design_default_color_secondary"
+            app:layout_constraintEnd_toEndOf="@id/include_load_progress"
+            app:layout_constraintStart_toStartOf="@id/include_load_progress"
+            app:layout_constraintTop_toBottomOf="@id/include_load_progress" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

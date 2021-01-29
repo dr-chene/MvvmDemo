@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    //这里的命名只是为了方便，实际项目中推荐以“模块名_逻辑名称_颜色”命名
+    <color name="color_blue">#FF3489FF</color>
+    <color name="color_blue_light">#FF3489FF</color>
+    <color name="color_blue_lighter">#03A9F4</color>
+    <color name="color_blue_dark">#467EEB</color>
+    <color name="color_cyan">#00BCD4</color>
+    <color name="color_red">#F44336</color>
+    <color name="color_red_dark">#E91E63</color>
+    <color name="color_pink">#FFEF78D5</color>
+    <color name="color_purple">#9C27B0</color>
+    <color name="color_purple_dark">#673AB7</color>
+    <color name="color_origin">#FF9800</color>
+    <color name="color_origin_dark">#FF5722</color>
+    <color name="color_yellow_dark">#FFC107</color>
+    <color name="color_yellow_darker">#CDB909</color>
+    <color name="color_green">#8BC34A</color>
+    <color name="color_green_light">#CDDC39</color>
+    <color name="color_green_dark">#4CAF50</color>
+    <color name="color_green_darker">#009688</color>
+    <color name="color_brown">#FFBB7777</color>
+    <color name="color_brown_light">#C9A375</color>
+
+    <color name="include_load_bg">#80efefef</color>
+</resources>

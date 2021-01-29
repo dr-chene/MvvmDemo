@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MvvmDemo</string>
+    <string name="article_test_title">简洁唯美的 WanAndroid 客户端， Kotlin + MVVM + Jetpack + Retrofit + Kotlin协程 + Glide</string>
+    <string name="article_test_desc">1. 包括文件处理的大部分功能 : mimeType(FileMimeType),  打开 FileOpener , 大小 FileSizeUtils , 类型 FileType , Uri和路径管理FileUri.kt , 以及通用工具类 FileUtils 。\r\n2. 文件选择器\r\n3. 图片压缩 基于 Luban\r\n4. AndroidQ &amp; Android 11 兼容库 </string>
+    <string name="article_test_time">2020–10–30 11:52</string>
+    <string name="article_test_author">作者：鸿洋</string>
+    <string name="include_load_text">正在加载，请稍候…</string>
+</resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+            name="tag"
+            type="com.dr_chene.mvvmdemo.bean.Tag" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/tag_layout_margin_end"
+        android:visibility="@{tag == null ? View.GONE : View.VISIBLE}"
+        app:cardBackgroundColor="@{tag.color, default=@color/color_blue_light}"
+        app:cardCornerRadius="@dimen/tag_corner_radius"
+        app:cardElevation="@dimen/tag_card_elevation">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingStart="5dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="2dp"
+            android:text="@{tag.name, default=新发布}"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+    </androidx.cardview.widget.CardView>
+</layout>

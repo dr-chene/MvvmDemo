@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="java.util.List"/>
+        <import type="com.dr_chene.mvvmdemo.bean.Tag"/>
+
+        <variable
+            name="tags"
+            type="List&lt;Tag>" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <include
+            layout="@layout/include_tag_item"
+            bind:tag="@{tags[3]}"/>
+
+        <include
+            layout="@layout/include_tag_item"
+            bind:tag="@{tags[2]}"/>
+
+        <include
+            layout="@layout/include_tag_item"
+            bind:tag="@{tags[1]}"/>
+
+        <include
+            layout="@layout/include_tag_item"
+            bind:tag="@{tags[0]}"/>
+    </LinearLayout>
+</layout>

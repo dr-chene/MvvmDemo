@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="recycle_item_article_layout_margin">5dp</dimen>
+    <dimen name="recycle_item_article_layout_card_corn_radius">5dp</dimen>
+    <dimen name="recycle_item_article_cl_layout_margin">10dp</dimen>
+    <dimen name="tag_layout_margin_end">5dp</dimen>
+    <dimen name="tag_corner_radius">4dp</dimen>
+    <dimen name="tag_card_elevation">0dp</dimen>
+    <dimen name="article_collect_length">25dp</dimen>
+    <dimen name="text_size_min">12sp</dimen>
+    <dimen name="article_author_layout_margin_top">10dp</dimen>
+    <dimen name="article_publish_time_layout_margin_top">5dp</dimen>
+    <dimen name="article_desc_layout_margin_top">5dp</dimen>
+    <dimen name="text_size_mid">16sp</dimen>
+    <dimen name="article_title_layout_margin_top">5dp</dimen>
+    <dimen name="fab_change_layout_margin">16dp</dimen>
+    <dimen name="include_load_center_card_elevation">5dp</dimen>
+    <dimen name="include_load_center_card_width">170dp</dimen>
+    <dimen name="include_load_center_card_height">150dp</dimen>
+    <dimen name="include_load_center_card_corner_radius">10dp</dimen>
+</resources>

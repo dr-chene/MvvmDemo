@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="article"
+            type="com.dr_chene.mvvmdemo.bean.Article" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/recycle_item_article_layout_margin"
+        app:cardCornerRadius="@dimen/recycle_item_article_layout_card_corn_radius">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/recycle_item_article_cl_layout_margin">
+
+            <include
+                android:id="@+id/include_article_tags"
+                layout="@layout/include_article_tags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                bind:tags="@{article.tags}" />
+
+            <TextView
+                android:id="@+id/tv_article_title"
+                android:text="@{article.title, default=@string/article_test_title}"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/article_title_layout_margin_top"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_mid"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/include_article_tags" />
+
+            <TextView
+                android:id="@+id/tv_article_desc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/article_desc_layout_margin_top"
+                android:text="@{article.desc, default=@string/article_test_desc}"
+                android:visibility="@{article.desc.length() > 0 ? View.VISIBLE : View.GONE}"
+                app:layout_constraintEnd_toEndOf="@id/tv_article_title"
+                app:layout_constraintStart_toStartOf="@id/tv_article_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_article_title" />
+
+            <TextView
+                android:id="@+id/tv_article_author"
+                bindAuthor="@{article}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/article_author_layout_margin_top"
+                android:text="@string/article_test_author"
+                android:textColor="@color/color_blue"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_article_desc" />
+
+            <TextView
+                android:id="@+id/tv_article_publish_time"
+                bindTime="@{article.publishTime}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/article_publish_time_layout_margin_top"
+                android:text="@string/article_test_time"
+                android:textSize="@dimen/text_size_min"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_article_author" />
+
+            <ImageView
+                android:id="@+id/iv_article_collect"
+                android:layout_width="@dimen/article_collect_length"
+                android:layout_height="@dimen/article_collect_length"
+                android:src="@drawable/ic_collect"
+                app:layout_constraintBottom_toBottomOf="@id/tv_article_publish_time"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_article_author" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>
