@@ -15,6 +15,7 @@ import java.util.List;
 
 public class ArticleViewModel extends ViewModel {
     private final ArticleRepository repository;
+    //livedata的使用
     private final MutableLiveData<List<Article>> articles;
 
     public ArticleViewModel(ArticleRepository repository) {

@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+//在xml中使用的方法，学习链接 https://developer.android.com/topic/libraries/data-binding/binding-adapters#custom-logic
 public class DataBindAdapter {
 
     private DataBindAdapter() {

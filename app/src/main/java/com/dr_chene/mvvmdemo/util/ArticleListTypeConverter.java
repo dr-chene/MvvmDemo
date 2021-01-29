@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
+//List的转换器，将bean中的List转换为string存入room，取的时候再自动转回来
 public class ArticleListTypeConverter {
 
     @TypeConverter

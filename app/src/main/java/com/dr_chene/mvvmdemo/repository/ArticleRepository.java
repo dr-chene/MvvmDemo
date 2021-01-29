@@ -17,7 +17,6 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-
 public class ArticleRepository {
     private final PageArticleDao pageArticleDao;
     private final ArticleService pageArticleApi;
