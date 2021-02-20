@@ -6,6 +6,7 @@ import android.content.Context;
 public class App extends Application {
 
     private static Context context;
+    public static boolean connected = false;
 
     @Override
     public void onCreate() {

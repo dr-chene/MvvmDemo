@@ -37,6 +37,15 @@ public class Article {
     private int visible;
     private int zan;
 
+    @Override
+    public String toString() {
+        return "Article{" +
+                "author='" + author + '\'' +
+                ", desc='" + desc + '\'' +
+                ", title='" + title + '\'' +
+                '}';
+    }
+
     public String getApkLink() {
         return apkLink;
     }

@@ -4,20 +4,22 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.dr_chene.mvvmdemo.App;
-import com.dr_chene.mvvmdemo.bean.Article;
 import com.dr_chene.mvvmdemo.model.PageArticle;
 import com.dr_chene.mvvmdemo.model.PageArticleDao;
 import com.dr_chene.mvvmdemo.remote.ArticleService;
 import com.dr_chene.mvvmdemo.remote.NetRes;
-
-import java.util.List;
+import com.dr_chene.mvvmdemo.viewmodel.ArticleViewModel;
 
 import io.reactivex.CompletableObserver;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class ArticleRepository {
+
+    public static final String TAG = "ArticleRepository";
+
     private final PageArticleDao pageArticleDao;
     private final ArticleService pageArticleApi;
     private int curPage = 0;
@@ -28,62 +30,78 @@ public class ArticleRepository {
         this.pageArticleApi = pageArticleService;
     }
 
-    public List<Article> refreshArticles() {
+    public ArticleViewModel.RequestResult<PageArticle> refresh() {
+        boolean request = refreshArticles();
+        ArticleViewModel.RequestResult<PageArticle> res;
+        if (request) res = new ArticleViewModel.RequestResult<>(pageArticleDao.getArticleByPage(1)
+                .subscribeOn(Schedulers.io()), true);
+        else res = new ArticleViewModel.RequestResult<>(false);
+        return res;
+    }
+
+    public ArticleViewModel.RequestResult<PageArticle> load() {
+        boolean request = loadArticles();
+        ArticleViewModel.RequestResult<PageArticle> res;
+        if (request)
+            res = new ArticleViewModel.RequestResult<>(pageArticleDao.getArticleByPage(curPage)
+                    .subscribeOn(Schedulers.io()), true);
+        else res = new ArticleViewModel.RequestResult<>(false);
+        return res;
+    }
+
+    private boolean refreshArticles() {
         return getArticleByPage(0);
     }
 
-    public List<Article> loadArticles() {
+    private boolean loadArticles() {
         return getArticleByPage(++curPage);
     }
 
     //加载数据，思路是通过网络加载数据，如果失败则从本地加载数据
     //事实上我觉得这样的模式会消耗大量的流量，并且在网络优良的情况下本地room数据基本没用
     //我是考虑到用户既然要使用该app，就是想获得最新的数据(网上)，所以才使用了这样一个模式
-    private List<Article> getArticleByPage(int page) {
+    private boolean getArticleByPage(int page) {
         if (over) {
             Toast.makeText(App.getContext(), "no more data", Toast.LENGTH_SHORT).show();
-            return null;
+            return false;
         }
-        NetRes<PageArticle> netRes = pageArticleApi.getArticleByPage(page)
-                .subscribeOn(Schedulers.io())
-                .blockingLast();
-        if (netRes.getErrorCode() != 0) {
-            Toast.makeText(App.getContext(), netRes.getErrorMsg(), Toast.LENGTH_SHORT).show();
-            return null;
+        if (!App.connected) {
+            Toast.makeText(App.getContext(), "网络不可用", Toast.LENGTH_SHORT).show();
+            return false;
         }
-        PageArticle articles = netRes.getData();
-        over = articles.over;
-//        articles = null;
-        if (articles == null) {
-            //这有一个bug，app初始化就从room加载本地数据会显示找不到，成功显示ui后就不会
-            //可以将PageArticleDao中的Maybe改为Single看看这个bug
-            articles = pageArticleDao.getArticleByPage(page)
-                    .subscribeOn(io.reactivex.schedulers.Schedulers.io())
-                    .blockingGet();
-        } else {
-            insertPageArticle(articles);
-        }
-        return articles == null ? null : articles.datas;
-    }
-
-    private void insertPageArticle(PageArticle article){
-        pageArticleDao.insertArticle(article)
-                .subscribeOn(io.reactivex.schedulers.Schedulers.io())
-                .subscribe(new CompletableObserver() {
+        pageArticleApi.getArticleByPage(page)
+                .subscribe(new DisposableSingleObserver<NetRes<PageArticle>>() {
                     @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        Log.d("TAG_d", "onSubscribe: " + d.toString());
-                    }
+                    public void onSuccess(@NonNull NetRes<PageArticle> pageArticleNetRes) {
+                        if (pageArticleNetRes.getErrorCode() != 0) {
+                            new Exception(pageArticleNetRes.getErrorMsg()).printStackTrace();
+                        }
+                        over = pageArticleNetRes.getData().over;
+                        Log.d(TAG, "onSuccess: " + pageArticleNetRes.getData().datas.get(0));
+                        Log.d(TAG, "onSuccess: " + pageArticleNetRes.getData().curPage);
+                        pageArticleDao.insertArticle(pageArticleNetRes.getData()).subscribe(new CompletableObserver() {
+                            @Override
+                            public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
 
-                    @Override
-                    public void onComplete() {
-                        Log.d("TAG_d", "onComplete: ");
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                Log.d(TAG, "onComplete: insert success");
+                            }
+
+                            @Override
+                            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                                e.printStackTrace();
+                            }
+                        });
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        Log.d("TAG_d", "onError: " + e.getMessage());
+                        e.printStackTrace();
                     }
                 });
+        return true;
     }
 }

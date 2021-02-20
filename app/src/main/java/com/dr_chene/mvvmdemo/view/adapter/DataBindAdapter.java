@@ -1,6 +1,7 @@
 package com.dr_chene.mvvmdemo.view.adapter;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
@@ -26,6 +27,11 @@ public class DataBindAdapter {
             text = article.getShareUser();
         }
         view.setText(text);
+    }
+
+    @BindingAdapter("loadImg")
+    public static void bindImg(ImageView view, String url) {
+
     }
 
     @BindingAdapter("bindTime")

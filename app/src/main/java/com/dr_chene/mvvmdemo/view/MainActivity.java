@@ -1,12 +1,12 @@
 package com.dr_chene.mvvmdemo.view;
 
-import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -19,82 +19,80 @@ import com.dr_chene.mvvmdemo.di.Inject;
 import com.dr_chene.mvvmdemo.view.adapter.ArticleRecyclerViewAdapter;
 import com.dr_chene.mvvmdemo.viewmodel.ArticleViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
-    private ActivityMainBinding mainBinding;
+    public static final String TAG = "MainActivity";
+
     private ArticleRecyclerViewAdapter adapter;
     private ArticleViewModel viewModel;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+    public void initView(ActivityMainBinding binding) {
         viewModel = Inject.injectArticleViewModel();
-
-        initView();
-        initAction();
-        subscribe();
-    }
-
-    private void initView() {
-        mainBinding.swipeRefreshMainArticle.setRefreshing(true);
+        binding.swipeRefreshMainArticle.setRefreshing(true);
         adapter = new ArticleRecyclerViewAdapter();
-        mainBinding.rvMainArticle.setAdapter(adapter);
+        binding.rvMainArticle.setAdapter(adapter);
+        Toast.makeText(this, "refresh", Toast.LENGTH_SHORT).show();
         refresh();
     }
 
-    private void initAction() {
-        mainBinding.swipeRefreshMainArticle.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refresh();
-            }
-        });
-        setLoadAction(mainBinding.rvMainArticle, new LoadAction() {
-            @Override
-            public void action() {
-                load();
-            }
-        });
-        mainBinding.fabArticleChange.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                adapter.submitList(null);
-            }
+    @Override
+    public void initAction(ActivityMainBinding binding) {
+        binding.swipeRefreshMainArticle.setOnRefreshListener(this::refresh);
+        setLoadAction(binding.rvMainArticle, this::load);
+        binding.fabArticleChange.setOnClickListener((v) -> {
+            adapter.submitList(null);
         });
     }
 
-    private void subscribe() {
-        viewModel.getArticles().observe(this, new Observer<List<Article>>() {
-            @Override
-            public void onChanged(List<Article> list) {
-                mainBinding.swipeRefreshMainArticle.setRefreshing(false);
-                mainBinding.load.getRoot().setVisibility(View.INVISIBLE);
+    @Override
+    public void subscribe(ActivityMainBinding binding) {
+        viewModel.getArticles().observe(this, (list) -> {
+                binding.swipeRefreshMainArticle.setRefreshing(false);
+                binding.load.getRoot().setVisibility(View.INVISIBLE);
                 adapter.submitList(list);
-            }
         });
+    }
+
+    @Override
+    public int getContentViewResId() {
+        return R.layout.activity_main;
     }
 
     private void refresh() {
         if (!viewModel.refreshArticles()){
+            getBinding().swipeRefreshMainArticle.setRefreshing(false);
             Toast.makeText(App.getContext(), "刷新失败", Toast.LENGTH_SHORT).show();
         }
+        autoCancel();
     }
 
     private void load() {
-        mainBinding.load.getRoot().setVisibility(View.VISIBLE);
+        getBinding().load.getRoot().setVisibility(View.VISIBLE);
         if (!viewModel.loadArticles(adapter.getCurrentList())){
+            getBinding().load.getRoot().setVisibility(View.INVISIBLE);
             Toast.makeText(App.getContext(), "加载失败", Toast.LENGTH_SHORT).show();
         }
+        autoCancel();
     }
 
 
     private boolean isSlideToBottom(RecyclerView view) {
         return view.computeVerticalScrollExtent() + view.computeVerticalScrollOffset()
                 >= view.computeVerticalScrollRange();
+    }
+
+    private void autoCancel(){
+        new Handler(getMainLooper()).postDelayed(() -> {
+            if (getBinding().swipeRefreshMainArticle.isRefreshing()){
+                getBinding().swipeRefreshMainArticle.setRefreshing(false);
+            }
+            if (getBinding().load.getRoot().getVisibility() == View.VISIBLE){
+                getBinding().load.getRoot().setVisibility(View.INVISIBLE);
+            }
+        },5000);
     }
 
     private void setLoadAction(RecyclerView view, LoadAction action) {

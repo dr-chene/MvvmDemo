@@ -8,8 +8,7 @@ import com.dr_chene.mvvmdemo.viewmodel.ArticleViewModel;
 
 public class Inject {
 
-    private Inject() {
-    }
+    private Inject() { }
 
     public static ArticleViewModel injectArticleViewModel() {
         return new ArticleViewModel(getArticleRepository());
