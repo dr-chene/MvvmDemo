@@ -64,6 +64,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     private void refresh() {
         if (!viewModel.refreshArticles()){
             getBinding().swipeRefreshMainArticle.setRefreshing(false);
+            getBinding().load.getRoot().setVisibility(View.INVISIBLE);
             Toast.makeText(App.getContext(), "刷新失败", Toast.LENGTH_SHORT).show();
         }
         autoCancel();
@@ -92,7 +93,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             if (getBinding().load.getRoot().getVisibility() == View.VISIBLE){
                 getBinding().load.getRoot().setVisibility(View.INVISIBLE);
             }
-        },5000);
+        },4000);
     }
 
     private void setLoadAction(RecyclerView view, LoadAction action) {

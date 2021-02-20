@@ -1,6 +1,7 @@
 package com.dr_chene.mvvmdemo.remote;
 
 
+import com.dr_chene.mvvmdemo.NetworkBoundResource;
 import com.dr_chene.mvvmdemo.model.PageArticle;
 
 
@@ -11,7 +12,7 @@ import retrofit2.http.Path;
 public interface ArticleService {
 
     @GET("/article/list/{page}/json")
-    Single<NetRes<PageArticle>> getArticleByPage(
+    Single<NetworkBoundResource.ApiResponse<PageArticle>> getArticleByPage(
             @Path("page") int page
     );
 }

@@ -1,2 +1,3 @@
+include ':official_demo'
 include ':app'
 rootProject.name = "MvvmDemo"

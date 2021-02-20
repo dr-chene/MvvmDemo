@@ -5,6 +5,8 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import java.util.List;
+
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 
@@ -12,7 +14,7 @@ import io.reactivex.Flowable;
 public interface PageArticleDao {
 
     @Query("SELECT * FROM page_articles WHERE cur_page = :page ")
-    Flowable<PageArticle> getArticleByPage(int page);
+    Flowable<List<PageArticle>> getArticleByPage(int page);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Completable insertArticle(PageArticle article);
